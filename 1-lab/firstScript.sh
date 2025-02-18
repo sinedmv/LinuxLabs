@@ -27,7 +27,7 @@ echo 'Be careful!!!!' > /etc/skel/readme.txt
 # 5
 u1='u1'
 u1Passwd='12345678'
-sudo useradd $u1
+sudo useradd -m -d /home/u1 $u1
 echo $u1':'$u1Passwd | sudo chpasswd 
 
 # 6
@@ -50,12 +50,12 @@ echo '10)' >> work3.log
 grep 'g1' /etc/group | awk -F":" '{print $4}' >> work3.log
 
 # 11
-usermod -s /usr/bin/mc $u1
+sudo usermod -s /usr/bin/mc $u1
 
 # 12
 u2='u2'
 u2Passwd='87654321'
-sudo useradd $u2
+sudo useradd -m -d /home/u2 $u2
 echo $u2':'$u2Passwd | sudo chpasswd 
 
 # 13
@@ -69,19 +69,19 @@ sudo groupadd $g14
 sudo usermod -a -G $g14 $u1
 sudo usermod -a -G $g14 $u2
 
-sudo chown u1:g14 /home/test13
-sudo chmod 770 /home/test13 # даем все права только u1, u2
-sudo chown u1:g14 /home/test13/*
-sudo chmod 640 /home/test13/* # u1, u2 должны уметь просматривать
+chown u1:g14 /home/test13
+chmod 770 /home/test13 # даем все права только u1, u2
+chown u1:g14 /home/test13/*
+chmod 640 /home/test13/* # u1, u2 должны уметь просматривать
 
 # 15
 mkdir /home/test14
 # sticky-bit (см. лекцию Маятина)
-sudo chmod 1777 /home/test14
+chmod 1777 /home/test14
 
 # 16
 cp /usr/bin/nano /home/test14
-sudo chmod 777 /home/test14/nano # Если нет доступа к директории
+chmod 777 /home/test14/nano # Если нет доступа к директории
 # то мы всё ещё можем обратиться к файлам, зная их полный путь
 
 # 17
@@ -91,6 +91,6 @@ echo "Abas" > /home/test15/secret_file
 chmod 666 /home/test15/secret_file
 
 # 18
+cat /etc/sudoers.d/u1 > sudo_u1_backup # файла нет
 echo "u1 ALL=(root) /usr/bin/passwd" > /etc/sudoers.d/u1
 # даем доступ только в /passwd
-
