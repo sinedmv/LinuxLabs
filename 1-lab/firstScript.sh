@@ -80,15 +80,15 @@ mkdir /home/test14
 chmod 1777 /home/test14
 
 # 16
-cp /usr/bin/nano /home/test14
-chmod 777 /home/test14/nano # Если нет доступа к директории
-# то мы всё ещё можем обратиться к файлам, зная их полный путь
+cp /bin/nano /home/test14/nano
+sudo chown u1:u1 /home/test14/nano # устанавливаем владельца данного файла u1
+sudo chmod ugo+s /home/test14/nano # s делает так, чтобы могли исполнять от имени владельца
 
 # 17
 mkdir /home/test15
-touch /home/test15/secret_file
 echo "Abas" > /home/test15/secret_file
-chmod 666 /home/test15/secret_file
+sudo chmod 111 /home/test15
+sudo chmod 444 /home/test15/secret_file
 
 # 18
 cat /etc/sudoers.d/u1 > sudo_u1_backup # файла нет
