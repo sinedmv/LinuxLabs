@@ -135,7 +135,7 @@ https://www.sim-networks.com/ru/kb/add-disk-space-linux-server-lvm-debian
 fdisk /dev/sde
 
 vgextend newVolumeGroup /dev/sde1
-lvextend -l +511 /dev/newVolumeGroup/newLogicalVolume # добавляем кол-во свободных PE (Physical Extend) из vgdisplay 
+lvextend -l +511 /dev/newVolumeGroup/newLogicalVolume --stripes 1 # добавляем кол-во свободных PE (Physical Extend) из vgdisplay 
 ```
 ## 18
 ```
