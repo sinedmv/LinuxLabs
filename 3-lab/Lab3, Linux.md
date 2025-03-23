@@ -238,6 +238,7 @@ dpkg-deb -R apt_2.6.1_amd64.deb aptCheck
 # Там можно изучить, зная из чего состоит пакет, что происходит при его установке (см. линку и инет, из чего состоит разархивированный пакет)
 
 И еще, в APT есть коровья суперсила!!!
+Смотрим apt-get
 https://unix.stackexchange.com/questions/92185/whats-the-story-behind-super-cow-powers
 
 root@d12:/# apt-get moo

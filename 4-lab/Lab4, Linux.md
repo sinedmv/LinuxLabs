@@ -32,24 +32,21 @@ systemd-analyze blame
 ```
 ### 3. Выведите список сервисов, запуск которых с необходимостью предшествовал запуску сервиса sshd.
 ```
-systemctl list-dependencies sshd
+systemd-analyze critical-chain sshd.service
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
 
-sshd.service
-● ├─-.mount
-● ├─system.slice
-● └─sysinit.target
-●   ├─apparmor.service
-●   ├─dev-hugepages.mount
-●   ├─dev-mqueue.mount
-●   ├─keyboard-setup.service
-●   ├─kmod-static-nodes.service
-●   ├─proc-sys-fs-binfmt_misc.automount
-●   ├─sys-fs-fuse-connections.mount
-●   ├─sys-kernel-config.mount
-●   ├─sys-kernel-debug.mount
-●   ├─sys-kernel-tracing.mount
-●   ├─systemd-ask-password-console.path
-●   ├─systemd-binfmt.service
+ssh.service +225ms
+└─network.target @4.286s
+  └─networking.service @2.551s +1.734s
+    └─apparmor.service @1.525s +1.007s
+      └─local-fs.target @1.520s
+        └─run-credentials-systemd\x2dsysusers.service.mount @1.878s
+          └─local-fs-pre.target @1.518s
+            └─keyboard-setup.service @637ms +880ms
+              └─systemd-journald.socket @605ms
+                └─-.mount @589ms
+                  └─-.slice @589ms
 ```
 ### 4. Сформируйте изображение в формате svg с графиком загрузки системы, сохраните его в файл.
 ```
@@ -218,6 +215,12 @@ mount | grep /mnt/mydata
 ```
 Аналогично предыдущей части. Используем sdb2
 и создадим директорию /mnt/mydata_auto
+
+# OutOfData. Размонтируем с предыдущего пункта директорию
+
+systemctl disable mnt-mydata.mount
+
+# Перезапуск
 ```
 ## 2. Создание .automount юнита
 #### a. Создайте файл .automount юнита в /etc/systemd/system/mntmydata.automount.
@@ -288,6 +291,7 @@ mnt-mydata.automount - DoingPart6
 
 ### Вопросы и задания:
 #### 1. Чем отличаются команды systemctl restart и systemctl try-restart?
+https://manpages.ubuntu.com/manpages/trusty/man1/systemctl.1.html
 - `systemctl restart` перезапускает сервис независимо от его текущего состояния.
 - `systemctl try-restart` перезапускает сервис только если он уже запущен.
 #### 2. Как с помощью systemctl запустить Linux в однопользовательском режиме?
